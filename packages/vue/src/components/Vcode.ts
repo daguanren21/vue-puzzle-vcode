@@ -30,6 +30,11 @@ const VcodeImpl = defineComponent({
     })
     expose({
       reset: () => state?.reset(),
+      // Keep `state` as the canonical handle (matches `VcodeRoot`).
+      // `getState` retained as a thin alias for early 2.0 consumers.
+      get state() {
+        return state
+      },
       getState: () => state,
     })
 

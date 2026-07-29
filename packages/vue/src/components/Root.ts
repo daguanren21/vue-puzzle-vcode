@@ -15,6 +15,7 @@ let bodyLockCount = 0
  */
 const VcodeRootImpl = defineComponent({
   name: 'VcodeRoot',
+  inheritAttrs: false,
   props: vcodeProps,
   emits: vcodeEmits,
   setup(props, { emit, slots, expose, attrs }) {

@@ -52,7 +52,7 @@ jobs:
         with:
           version: pnpm version-packages
           # Auth is OIDC only — no NPM_TOKEN / NODE_AUTH_TOKEN.
-          # Trusted Publisher for vue-puzzle-vcode, @vue-puzzle-vcode/core and
+          # Trusted Publisher for @vue-puzzle-vcode/ui, @vue-puzzle-vcode/core
           # @vue-puzzle-vcode/shared must point at this workflow filename:
           # release.yml
           publish: pnpm release

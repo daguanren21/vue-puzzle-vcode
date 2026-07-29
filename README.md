@@ -1,4 +1,4 @@
-# vue-puzzle-vcode [![npm](https://img.shields.io/npm/v/vue-puzzle-vcode.svg)](https://www.npmjs.com/package/vue-puzzle-vcode) [![npm downloads](https://img.shields.io/npm/dt/vue-puzzle-vcode.svg)](https://www.npmjs.com/package/vue-puzzle-vcode)
+# vue-puzzle-vcode [![npm](https://img.shields.io/npm/v/@vue-puzzle-vcode/ui.svg)](https://www.npmjs.com/package/@vue-puzzle-vcode/ui) [![npm downloads](https://img.shields.io/npm/dt/@vue-puzzle-vcode/ui.svg)](https://www.npmjs.com/package/@vue-puzzle-vcode/ui)
 
 Vue 纯前端的拼图人机验证、右滑拼图验证。不依赖任何第三方 SDK 与后端接口,纯 Canvas 本地生成校验。
 
@@ -23,8 +23,8 @@ Vue 纯前端的拼图人机验证、右滑拼图验证。不依赖任何第三�
 ## 安装
 
 ```bash
-pnpm add vue-puzzle-vcode
-# npm i vue-puzzle-vcode / yarn add vue-puzzle-vcode
+pnpm add @vue-puzzle-vcode/ui
+# npm i @vue-puzzle-vcode/ui / yarn add @vue-puzzle-vcode/ui
 ```
 
 项目需已安装 `vue@^2.7 || ^3`(peer dependency)。`vue-demi` 会在安装时自动切换到与你项目匹配的版本。
@@ -36,8 +36,8 @@ pnpm add vue-puzzle-vcode
 ```vue
 <script setup>
 import { ref } from 'vue'
-import Vcode from 'vue-puzzle-vcode'
-import 'vue-puzzle-vcode/style.css'
+import Vcode from '@vue-puzzle-vcode/ui'
+import '@vue-puzzle-vcode/ui/style.css'
 
 const show = ref(false)
 </script>
@@ -59,8 +59,8 @@ const show = ref(false)
 
 ```vue
 <script>
-import Vcode from 'vue-puzzle-vcode'
-import 'vue-puzzle-vcode/style.css'
+import Vcode from '@vue-puzzle-vcode/ui'
+import '@vue-puzzle-vcode/ui/style.css'
 
 export default {
   components: { Vcode },
@@ -94,9 +94,9 @@ export default {
 
 | 事件          | 参数            | 说明                                   |
 | ------------- | --------------- | -------------------------------------- |
-| `update:show` | `show: boolean` | 组件请求关闭(点遮罩 / 验证通过后自动关闭) |
-| `success`     | `diff: number`  | 验证通过,`diff` 为像素偏差            |
-| `fail`        | `diff: number`  | 验证失败(800ms 后自动重置)           |
+| `update:show` | `show: boolean` | 组件请求关闭时触发(目前仅点遮罩关闭);需父级同步改 `show` |
+| `success`     | `diff: number`  | 验证通过,`diff` 为像素偏差;**不会**自动关闭,请在回调里自行 `show = false` |
+| `fail`        | `diff: number`  | 验证失败(800ms 后自动重置拼图)           |
 | `close`       | —               | 请求关闭(与 `update:show(false)` 同步触发) |
 
 ## 默认组件的 Slots
@@ -122,33 +122,35 @@ import {
   VcodeCanvasMain, VcodeCanvasPuzzle, VcodeCanvasSuccess,
   VcodeFlash, VcodeLoading, VcodeMessage, VcodeRefresh,
   VcodeSlider, VcodeSliderProgress, VcodeSliderThumb,
-} from 'vue-puzzle-vcode'
+} from '@vue-puzzle-vcode/ui'
 </script>
 
 <template>
   <VcodeRoot v-model:show="show" @success="ok" @fail="bad">
     <VcodePortal>
-      <!-- 遮罩:随便加自己的 class / 过渡 -->
-      <VcodeOverlay class="bg-slate-900/60 backdrop-blur-sm" />
-      <VcodePanel>
-        <VcodeBoard>
-          <VcodeCanvasMain />
-          <VcodeCanvasSuccess />
-          <VcodeCanvasPuzzle />
-          <VcodeLoading />
-          <VcodeFlash />
-          <VcodeRefresh>
-            <button class="my-refresh">↻</button>
-          </VcodeRefresh>
-          <VcodeMessage v-slot="{ text, fail }">
-            <div :class="fail ? 'msg msg--fail' : 'msg'">{{ text }}</div>
-          </VcodeMessage>
-        </VcodeBoard>
-        <VcodeSlider>
-          <VcodeSliderProgress />
-          <VcodeSliderThumb><span>⇥</span></VcodeSliderThumb>
-        </VcodeSlider>
-      </VcodePanel>
+      <!-- 遮罩:随便加自己的 class / 过渡;Panel 必须是 Overlay 的子节点 -->
+      <VcodeOverlay class="bg-slate-900/60 backdrop-blur-sm">
+        <VcodePanel>
+          <VcodeBoard>
+            <VcodeCanvasMain />
+            <VcodeCanvasSuccess />
+            <VcodeCanvasPuzzle />
+            <VcodeLoading />
+            <VcodeFlash />
+            <VcodeRefresh>
+              <button class="my-refresh">↻</button>
+            </VcodeRefresh>
+            <VcodeMessage v-slot="{ text, fail }">
+              <div :class="fail ? 'msg msg--fail' : 'msg'">{{ text }}</div>
+            </VcodeMessage>
+          </VcodeBoard>
+          <VcodeSlider>
+            <VcodeSliderProgress>
+              <VcodeSliderThumb><span>⇥</span></VcodeSliderThumb>
+            </VcodeSliderProgress>
+          </VcodeSlider>
+        </VcodePanel>
+      </VcodeOverlay>
     </VcodePortal>
   </VcodeRoot>
 </template>
@@ -165,29 +167,40 @@ Vcode                    默认整体组件 = 下面这棵树的官方封装
 └─ VcodeRoot             [必需] 无渲染根:创建状态机、provide 上下文、
    │                     绑定 document 级拖拽监听、show 时锁 body 滚动
    └─ VcodePortal        把子树挂到 document.body(Vue2 安全的 Teleport)
-      ├─ VcodeOverlay    全屏遮罩;按下并抬起都在遮罩上 → 请求关闭
-      └─ VcodePanel      居中卡片;拦截指针事件,防止冒泡到遮罩误关
-         ├─ VcodeBoard   画布区容器(高度跟随 canvasHeight)
-         │  ├─ VcodeCanvasMain     主画布:带拼图缺口的背景图
-         │  ├─ VcodeCanvasSuccess  完整图,验证成功时淡入
-         │  ├─ VcodeCanvasPuzzle   拼图小块,translateX 跟随滑块
-         │  ├─ VcodeLoading        图片加载中的遮罩动画
-         │  ├─ VcodeFlash          验证成功时的斜向扫光
-         │  ├─ VcodeRefresh        右上角刷新按钮(点击重新生成拼图)
-         │  └─ VcodeMessage        结果提示条(绿=成功 / 红=失败)
-         └─ VcodeSlider            滑轨容器,含提示文案
-            ├─ VcodeSliderProgress 已拖动部分的填充条
-            └─ VcodeSliderThumb    可拖拽手柄(mousedown/touchstart 起点)
+      └─ VcodeOverlay    全屏遮罩;按下并抬起都在遮罩上 → 请求关闭
+         └─ VcodePanel   居中卡片;拦截指针事件,防止冒泡到遮罩误关
+            ├─ VcodeBoard   画布区容器(高度跟随 canvasHeight)
+            │  ├─ VcodeCanvasMain     主画布:带拼图缺口的背景图
+            │  ├─ VcodeCanvasSuccess  完整图,验证成功时淡入
+            │  ├─ VcodeCanvasPuzzle   拼图小块,translateX 跟随滑块
+            │  ├─ VcodeLoading        图片加载中的遮罩动画
+            │  ├─ VcodeFlash          验证成功时的斜向扫光
+            │  ├─ VcodeRefresh        右上角刷新按钮(点击重新生成拼图)
+            │  └─ VcodeMessage        结果提示条(绿=成功 / 红=失败)
+            └─ VcodeSlider            滑轨容器,含提示文案
+               ├─ VcodeSliderProgress 已拖动部分的填充条
+               └─ VcodeSliderThumb    可拖拽手柄(mousedown/touchstart 起点)
 ```
 
 **功能核心 vs 可替换装饰**:三个 `VcodeCanvas*`、`VcodeSliderProgress`、`VcodeSliderThumb` 是状态机直接依赖的功能件(画布要被绘制、progress 元素要被测量、thumb 是拖拽起点),替换它们时必须保留注册/事件契约;`Overlay` / `Panel` / `Flash` / `Loading` / `Message` / `Refresh` 是纯表现层,可随意删改。
+
+## 模板 ref
+
+`Vcode` 与 `VcodeRoot` 暴露同一套实例方法:
+
+```ts
+// template ref
+vcodeRef.value?.reset()
+vcodeRef.value?.state // VcodeContext | null(Vcode) / VcodeContext(VcodeRoot)
+// Vcode 额外保留 getState() 别名
+```
 
 ## Headless:`useVcode` 状态机
 
 连部件都不想用?直接从 `@vue-puzzle-vcode/core` 拿状态机,自己渲染:
 
 ```ts
-import { useVcode, provideVcodeContext } from 'vue-puzzle-vcode'
+import { useVcode, provideVcodeContext } from '@vue-puzzle-vcode/ui'
 
 // 在根组件 setup 中
 const ctx = useVcode(props, {
@@ -205,10 +218,15 @@ provideVcodeContext(ctx) // 之后任意后代组件 useVcodeContext() 取回
 组件样式与框架解耦,按需引入:
 
 ```ts
-import 'vue-puzzle-vcode/style.css'
+import '@vue-puzzle-vcode/ui/style.css'
 ```
 
 所有 class 以 `vpv-` 为前缀(如 `.vpv-overlay`、`.vpv-slider-thumb`),方便覆写;组合式用法下也可以完全不管它,全部自己写。
+
+## 注意
+
+- **仅浏览器端**:依赖 `document` / `canvas` / 指针事件,不要在 SSR 阶段渲染;Nuxt 等请 `ClientOnly` 或动态 import。
+- **纯前端校验**:成功事件可在客户端被伪造,只能挡脚本小子与误触,不能替代服务端鉴权。关键操作请再配后端二次校验(token、业务态等)。
 
 ## License
 

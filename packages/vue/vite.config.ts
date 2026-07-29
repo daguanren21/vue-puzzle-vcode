@@ -8,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       formats: ['es', 'cjs'],
-      fileName: (format) => (format === 'es' ? 'vue-puzzle-vcode.js' : 'vue-puzzle-vcode.cjs'),
+      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
       cssFileName: 'style',
     },
     rollupOptions: {

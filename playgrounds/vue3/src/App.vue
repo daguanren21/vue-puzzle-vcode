@@ -16,7 +16,7 @@ import Vcode, {
   VcodeSlider,
   VcodeSliderProgress,
   VcodeSliderThumb,
-} from 'vue-puzzle-vcode'
+} from '@vue-puzzle-vcode/ui'
 
 const show1 = ref(false)
 const show2 = ref(false)

@@ -1,6 +1,6 @@
 /**
  * Consumer-side type contract test: this file is compiled against the
- * PUBLISHED declarations of vue-puzzle-vcode with `skipLibCheck: false`,
+ * PUBLISHED declarations of @vue-puzzle-vcode/ui with `skipLibCheck: false`,
  * once per supported Vue version (2.7 / 3.x). It must typecheck on both.
  *
  * Note: components are rendered through our own `hCompat` — Vue 2.7's raw
@@ -35,7 +35,7 @@ import {
   useVcode,
   useVcodeContext,
   provideVcodeContext,
-} from 'vue-puzzle-vcode'
+} from '@vue-puzzle-vcode/ui'
 
 // --- Components are renderable with props, events and slots -----------------
 const tree = hCompat(

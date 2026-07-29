@@ -11,7 +11,7 @@
   "dependencies": {
     "vue": "catalog:vue27",
     "vue-demi": "catalog:",
-    "vue-puzzle-vcode": "workspace:^"
+    "@vue-puzzle-vcode/ui": "workspace:^"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",

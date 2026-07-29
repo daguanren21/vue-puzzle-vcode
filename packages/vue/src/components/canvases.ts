@@ -14,57 +14,69 @@ function useCanvasRegistration(key: VcodeCanvasKey, consumerName: string) {
 /** Main canvas: background image with the puzzle-shaped hole. */
 export const VcodeCanvasMain: DefineComponent = defineComponent({
   name: 'VcodeCanvasMain',
+  inheritAttrs: false,
   setup(_, { attrs }) {
     const ctx = useCanvasRegistration('main', 'VcodeCanvasMain')
-    return () =>
-      hCompat('canvas', {
-        class: 'vpv-canvas-main',
+    return () => {
+      const { class: extraClass, style, ...rest } = attrs
+      return hCompat('canvas', {
+        class: ['vpv-canvas-main', extraClass],
+        style: [{ width: `${ctx.config.canvasWidth}px`, height: `${ctx.config.canvasHeight}px` }, style],
         attrs: {
-          ...attrs,
+          ...rest,
           width: ctx.config.canvasWidth,
           height: ctx.config.canvasHeight,
         },
-        style: { width: `${ctx.config.canvasWidth}px`, height: `${ctx.config.canvasHeight}px` },
       })
+    }
   },
 })
 
 /** Floating puzzle piece canvas; translateX follows the slider. */
 export const VcodeCanvasPuzzle: DefineComponent = defineComponent({
   name: 'VcodeCanvasPuzzle',
+  inheritAttrs: false,
   setup(_, { attrs }) {
     const ctx = useCanvasRegistration('puzzle', 'VcodeCanvasPuzzle')
-    return () =>
-      hCompat('canvas', {
-        class: 'vpv-canvas-puzzle',
+    return () => {
+      const { class: extraClass, style, ...rest } = attrs
+      return hCompat('canvas', {
+        class: ['vpv-canvas-puzzle', extraClass],
+        style: [
+          {
+            width: `${ctx.puzzleBaseSize.value}px`,
+            height: `${ctx.config.canvasHeight}px`,
+            transform: `translateX(${ctx.puzzleTranslateX.value}px)`,
+          },
+          style,
+        ],
         attrs: {
-          ...attrs,
+          ...rest,
           width: ctx.puzzleBaseSize.value,
           height: ctx.config.canvasHeight,
         },
-        style: {
-          width: `${ctx.puzzleBaseSize.value}px`,
-          height: `${ctx.config.canvasHeight}px`,
-          transform: `translateX(${ctx.puzzleTranslateX.value}px)`,
-        },
       })
+    }
   },
 })
 
 /** Full-picture canvas revealed (opacity fade) on success. */
 export const VcodeCanvasSuccess: DefineComponent = defineComponent({
   name: 'VcodeCanvasSuccess',
+  inheritAttrs: false,
   setup(_, { attrs }) {
     const ctx = useCanvasRegistration('success', 'VcodeCanvasSuccess')
-    return () =>
-      hCompat('canvas', {
-        class: ['vpv-canvas-success', { 'vpv-canvas-success--show': ctx.isSuccess.value }],
+    return () => {
+      const { class: extraClass, style, ...rest } = attrs
+      return hCompat('canvas', {
+        class: ['vpv-canvas-success', { 'vpv-canvas-success--show': ctx.isSuccess.value }, extraClass],
+        style: [{ width: `${ctx.config.canvasWidth}px`, height: `${ctx.config.canvasHeight}px` }, style],
         attrs: {
-          ...attrs,
+          ...rest,
           width: ctx.config.canvasWidth,
           height: ctx.config.canvasHeight,
         },
-        style: { width: `${ctx.config.canvasWidth}px`, height: `${ctx.config.canvasHeight}px` },
       })
+    }
   },
 })

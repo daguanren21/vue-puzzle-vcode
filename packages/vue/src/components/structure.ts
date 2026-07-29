@@ -7,6 +7,7 @@ import { hCompat, useVcodeContext } from '@vue-puzzle-vcode/core'
  */
 export const VcodeOverlay: DefineComponent = defineComponent({
   name: 'VcodeOverlay',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeOverlay')
     return () => {
@@ -33,6 +34,7 @@ export const VcodeOverlay: DefineComponent = defineComponent({
 /** Centered card container; swallows pointer events so they don't close. */
 export const VcodePanel: DefineComponent = defineComponent({
   name: 'VcodePanel',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     return () => {
       const { class: extraClass, style, ...rest } = attrs
@@ -54,6 +56,7 @@ export const VcodePanel: DefineComponent = defineComponent({
 /** Canvas area (the upper half of the card). */
 export const VcodeBoard: DefineComponent = defineComponent({
   name: 'VcodeBoard',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeBoard')
     return () => {

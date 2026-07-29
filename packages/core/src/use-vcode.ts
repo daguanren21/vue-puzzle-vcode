@@ -1,8 +1,11 @@
 import { computed, onScopeDispose, ref, shallowRef } from 'vue-demi'
 import type { ComputedRef, Ref, ShallowRef } from 'vue-demi'
 import {
+  computeDragDeviation,
   computePuzzleBaseSize,
+  computePuzzleTranslateX,
   computeSliderBaseSize,
+  computeTrackTravel,
   drawPuzzleFrame,
   generateRandomImage,
   loadImage,
@@ -119,13 +122,19 @@ export function useVcode(props: VcodePropsLike, emits: VcodeEmitters): UseVcodeR
         ? props.canvasWidth
         : w
   })
+  /**
+   * Travel distance of the track (slider end - start). Floored at 1 so the
+   * compensation term never divides by zero when canvasWidth ≈ sliderSize.
+   */
+  const trackTravel = computed(() => computeTrackTravel(props.canvasWidth, sliderBaseSize.value))
   /** translateX of the floating puzzle piece, synced to the slider. */
-  const puzzleTranslateX = computed(
-    () =>
-      styleWidth.value -
-      sliderBaseSize.value -
-      (puzzleBaseSize.value - sliderBaseSize.value) *
-        ((styleWidth.value - sliderBaseSize.value) / (props.canvasWidth - sliderBaseSize.value)),
+  const puzzleTranslateX = computed(() =>
+    computePuzzleTranslateX(
+      styleWidth.value,
+      sliderBaseSize.value,
+      puzzleBaseSize.value,
+      trackTravel.value,
+    ),
   )
 
   // ---------------------------------------------------- element registry
@@ -201,8 +210,12 @@ export function useVcode(props: VcodePropsLike, emits: VcodeEmitters): UseVcodeR
         pinY: pinY.value,
       })
     } catch {
-      // image failed (CORS/404): retry once with a generated image
-      return init(true)
+      // image failed (CORS/404): fall back once to a generated image.
+      // Generated-image path itself must not recurse — unstick loading.
+      if (!withCanvas) return init(true)
+      loading.value = false
+      isCanSlide.value = false
+      return
     }
     loading.value = false
     isCanSlide.value = true
@@ -234,12 +247,12 @@ export function useVcode(props: VcodePropsLike, emits: VcodeEmitters): UseVcodeR
   function submit() {
     isSubmting.value = true
     // deviation = anchor - dragged distance + width-gap compensation - shadow offset
-    const x = Math.abs(
-      pinX.value -
-        (styleWidth.value - sliderBaseSize.value) +
-        (puzzleBaseSize.value - sliderBaseSize.value) *
-          ((styleWidth.value - sliderBaseSize.value) / (props.canvasWidth - sliderBaseSize.value)) -
-        3,
+    const x = computeDragDeviation(
+      pinX.value,
+      styleWidth.value,
+      sliderBaseSize.value,
+      puzzleBaseSize.value,
+      trackTravel.value,
     )
     clearTimer()
     if (x < props.range) {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import 'vue-puzzle-vcode/style.css'
+import '@vue-puzzle-vcode/ui/style.css'
 import './style.css'
 
 new Vue({

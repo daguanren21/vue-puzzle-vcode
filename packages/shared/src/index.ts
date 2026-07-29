@@ -4,9 +4,10 @@
  * sliding-puzzle captcha. No Vue imports here — safe to bundle anywhere.
  */
 
-/** Random integer in [min, max]. */
+/** Random integer in [min, max] (inclusive). */
 export function randomInt(min: number, max: number): number {
-  return Math.ceil(Math.random() * (max - min) + min)
+  if (max < min) return min
+  return min + Math.floor(Math.random() * (max - min + 1))
 }
 
 /** Clamp `v` into [min, max]. */
@@ -28,6 +29,62 @@ export function computePuzzleBaseSize(puzzleScale: number): number {
  */
 export function computeSliderBaseSize(sliderSize: number, canvasWidth: number): number {
   return Math.max(Math.min(Math.round(sliderSize), Math.round(canvasWidth * 0.5)), 10)
+}
+
+/**
+ * Usable track length (canvasWidth - sliderBaseSize), floored at 1 so the
+ * drag-compensation term never divides by zero.
+ */
+export function computeTrackTravel(canvasWidth: number, sliderBaseSize: number): number {
+  return Math.max(1, canvasWidth - sliderBaseSize)
+}
+
+/**
+ * Horizontal offset of the floating puzzle piece, kept in sync with the
+ * slider. Compensates for puzzle-vs-slider width mismatch across the track.
+ */
+export function computePuzzleTranslateX(
+  styleWidth: number,
+  sliderBaseSize: number,
+  puzzleBaseSize: number,
+  trackTravel: number,
+): number {
+  const dragged = styleWidth - sliderBaseSize
+  return dragged - (puzzleBaseSize - sliderBaseSize) * (dragged / trackTravel)
+}
+
+/**
+ * Absolute pixel deviation used for pass/fail. The trailing `-3` undoes the
+ * shadow crop offset applied when the piece was copied off the main canvas.
+ */
+export function computeDragDeviation(
+  pinX: number,
+  styleWidth: number,
+  sliderBaseSize: number,
+  puzzleBaseSize: number,
+  trackTravel: number,
+): number {
+  const dragged = styleWidth - sliderBaseSize
+  return Math.abs(
+    pinX - dragged + (puzzleBaseSize - sliderBaseSize) * (dragged / trackTravel) - 3,
+  )
+}
+
+/**
+ * Source rectangle used to copy the puzzle piece (and its drop shadow) off
+ * the main canvas. `sw`/`sh` are WIDTH/HEIGHT for `getImageData`.
+ */
+export function computePuzzleCropRect(
+  pinX: number,
+  pinY: number,
+  puzzleBaseSize: number,
+): { sx: number; sy: number; sw: number; sh: number } {
+  return {
+    sx: pinX - 3,
+    sy: pinY - 20,
+    sw: puzzleBaseSize + 8,
+    sh: puzzleBaseSize + 25,
+  }
 }
 
 /**
@@ -235,9 +292,11 @@ export function drawPuzzleFrame(
   ctx.fillStyle = '#ffffaa'
   ctx.fill()
 
-  // 3. Copy the piece onto the small canvas
-  //    (-3px horizontal offset accounts for the shadow; validation adds 3 back)
-  const imgData = ctx.getImageData(pinX - 3, pinY - 20, pinX + puzzleBaseSize + 5, pinY + puzzleBaseSize + 5)
+  // 3. Copy the piece onto the small canvas.
+  //    Crop width/height (not end coords); -3px x-offset accounts for the
+  //    drop shadow; validation adds 3 back when computing the drag deviation.
+  const { sx, sy, sw, sh } = computePuzzleCropRect(pinX, pinY, puzzleBaseSize)
+  const imgData = ctx.getImageData(sx, sy, sw, sh)
   ctx2.putImageData(imgData, 0, pinY - 20)
 
   // 4. Reset main canvas and draw the hole

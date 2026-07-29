@@ -1,11 +1,11 @@
 {
   "name": "@vue-puzzle-vcode/shared",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Shared pure utilities for vue-puzzle-vcode (canvas drawing, math)",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/javaLuo/vue-puzzle-vcode.git",
+    "url": "git+https://github.com/daguanren21/vue-puzzle-vcode.git",
     "directory": "packages/shared"
   },
   "type": "module",
@@ -31,11 +31,13 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --root ../.. packages/shared/test"
   },
   "devDependencies": {
     "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public"

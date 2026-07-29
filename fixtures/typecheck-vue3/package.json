@@ -5,9 +5,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "vue-puzzle-vcode": "file:../vue-puzzle-vcode-2.0.0.tgz",
-    "@vue-puzzle-vcode/core": "file:../vue-puzzle-vcode-core-2.0.0.tgz",
-    "@vue-puzzle-vcode/shared": "file:../vue-puzzle-vcode-shared-2.0.0.tgz",
+    "@vue-puzzle-vcode/ui": "file:../vue-puzzle-vcode-ui-2.0.1.tgz",
+    "@vue-puzzle-vcode/core": "file:../vue-puzzle-vcode-core-2.0.1.tgz",
+    "@vue-puzzle-vcode/shared": "file:../vue-puzzle-vcode-shared-2.0.1.tgz",
     "vue": "3.5.40"
   },
   "devDependencies": {

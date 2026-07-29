@@ -1,23 +1,23 @@
 {
-  "name": "vue-puzzle-vcode",
-  "version": "2.0.0",
+  "name": "@vue-puzzle-vcode/ui",
+  "version": "2.0.1",
   "description": "vue 滑动拼图验证码 — sliding puzzle captcha components for Vue 2.7 & Vue 3",
   "type": "module",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/vue-puzzle-vcode.js"
+        "default": "./dist/index.js"
       },
       "require": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/vue-puzzle-vcode.cjs"
+        "default": "./dist/index.cjs"
       }
     },
     "./style.css": "./dist/style.css"
   },
-  "main": "./dist/vue-puzzle-vcode.cjs",
-  "module": "./dist/vue-puzzle-vcode.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
@@ -33,7 +33,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/javaLuo/vue-puzzle-vcode.git"
+    "url": "git+https://github.com/daguanren21/vue-puzzle-vcode.git",
+    "directory": "packages/vue"
   },
   "keywords": [
     "vue",
@@ -41,14 +42,15 @@
     "vcode",
     "captcha",
     "vue3",
-    "vue2.7"
+    "vue2.7",
+    "vue-puzzle-vcode"
   ],
-  "author": "L",
+  "author": "daguanren21",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/javaLuo/vue-puzzle-vcode/issues"
+    "url": "https://github.com/daguanren21/vue-puzzle-vcode/issues"
   },
-  "homepage": "https://github.com/javaLuo/vue-puzzle-vcode#readme",
+  "homepage": "https://github.com/daguanren21/vue-puzzle-vcode#readme",
   "dependencies": {
     "@vue-puzzle-vcode/core": "workspace:^",
     "vue-demi": "catalog:"
@@ -57,7 +59,6 @@
     "vue": "^2.7.0 || ^3.0.0"
   },
   "devDependencies": {
-    "@vue-puzzle-vcode/core": "workspace:^",
     "@vue-puzzle-vcode/shared": "workspace:^",
     "typescript": "catalog:",
     "vite": "catalog:",

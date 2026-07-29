@@ -8,6 +8,7 @@ import { hCompat, useVcodeContext } from '@vue-puzzle-vcode/core'
  */
 export const VcodeSlider: DefineComponent = defineComponent({
   name: 'VcodeSlider',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeSlider')
     return () => {
@@ -32,6 +33,7 @@ export const VcodeSlider: DefineComponent = defineComponent({
  *  element the state machine measures at drag start. */
 export const VcodeSliderProgress: DefineComponent = defineComponent({
   name: 'VcodeSliderProgress',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeSliderProgress')
     const vm = getCurrentInstance()
@@ -55,6 +57,7 @@ export const VcodeSliderProgress: DefineComponent = defineComponent({
 /** Draggable thumb. Slot: custom thumb content (default: 3 grip bars). */
 export const VcodeSliderThumb: DefineComponent = defineComponent({
   name: 'VcodeSliderThumb',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeSliderThumb')
     return () => {

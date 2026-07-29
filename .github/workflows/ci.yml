@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   verify:
-    name: typecheck / build / consumer contract
+    name: typecheck / test / build / consumer contract
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -35,6 +35,9 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
 
       - name: Build
         run: pnpm build

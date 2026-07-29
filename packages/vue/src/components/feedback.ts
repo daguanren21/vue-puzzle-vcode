@@ -5,6 +5,7 @@ import { RESET_ICON } from '@vue-puzzle-vcode/shared'
 /** Shine sweep across the picture on success. */
 export const VcodeFlash: DefineComponent = defineComponent({
   name: 'VcodeFlash',
+  inheritAttrs: false,
   setup(_, { attrs }) {
     const ctx = useVcodeContext('VcodeFlash')
     return () =>
@@ -25,6 +26,7 @@ export const VcodeFlash: DefineComponent = defineComponent({
 /** Loading overlay shown while the background image loads. Slot: custom spinner. */
 export const VcodeLoading: DefineComponent = defineComponent({
   name: 'VcodeLoading',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeLoading')
     return () =>
@@ -54,6 +56,7 @@ export const VcodeLoading: DefineComponent = defineComponent({
  */
 export const VcodeMessage: DefineComponent = defineComponent({
   name: 'VcodeMessage',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeMessage')
     return () =>
@@ -77,6 +80,7 @@ export const VcodeMessage: DefineComponent = defineComponent({
 /** Refresh button; regenerates the puzzle on click. Slot: custom content. */
 export const VcodeRefresh: DefineComponent = defineComponent({
   name: 'VcodeRefresh',
+  inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeRefresh')
     return () =>

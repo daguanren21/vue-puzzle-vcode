@@ -1,7 +1,7 @@
 # Standalone mini-workspace: keeps this fixture out of the repo workspace so
 # dependencies resolve exactly like a real consumer's install.
 overrides:
-  '@vue-puzzle-vcode/core': file:../vue-puzzle-vcode-core-2.0.0.tgz
-  '@vue-puzzle-vcode/shared': file:../vue-puzzle-vcode-shared-2.0.0.tgz
+  '@vue-puzzle-vcode/core': file:../vue-puzzle-vcode-core-2.0.1.tgz
+  '@vue-puzzle-vcode/shared': file:../vue-puzzle-vcode-shared-2.0.1.tgz
 allowBuilds:
   vue-demi: true

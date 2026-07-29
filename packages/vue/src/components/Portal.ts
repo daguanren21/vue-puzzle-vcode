@@ -12,8 +12,9 @@ const portalProps = {
 
 const VcodePortalImpl = defineComponent({
   name: 'VcodePortal',
+  inheritAttrs: false,
   props: portalProps,
-  setup(props, { slots }) {
+  setup(props, { slots, attrs }) {
     const vm = getCurrentInstance()
 
     onMounted(() => {
@@ -29,7 +30,14 @@ const VcodePortalImpl = defineComponent({
       el?.parentNode?.removeChild(el)
     })
 
-    return () => hCompat('div', { class: 'vpv-portal' }, slots.default?.() as unknown[])
+    return () => {
+      const { class: extraClass, style, ...rest } = attrs
+      return hCompat(
+        'div',
+        { class: ['vpv-portal', extraClass], style, attrs: rest },
+        slots.default?.() as unknown[],
+      )
+    }
   },
 })
 

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "vue": "catalog:",
-    "vue-puzzle-vcode": "workspace:^"
+    "@vue-puzzle-vcode/ui": "workspace:^"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",
