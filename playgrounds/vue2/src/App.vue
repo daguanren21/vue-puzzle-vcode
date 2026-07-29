@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 import Vcode, {
   VcodeBoard,
@@ -24,16 +24,16 @@ const showSize = ref(false)
 const showText = ref(false)
 const showParts = ref(false)
 
-const log = ref<string[]>([])
-function push(msg: string) {
+const log = ref([])
+function push(msg) {
   log.value.unshift(`[${new Date().toLocaleTimeString()}] ${msg}`)
   if (log.value.length > 8) log.value.pop()
 }
-function onSuccess(name: string) {
-  return (d: number) => push(`${name} 验证成功 diff=${d.toFixed(1)}`)
+function onSuccess(name) {
+  return (d) => push(`${name} 验证成功 diff=${d.toFixed(1)}`)
 }
-function onFail(name: string) {
-  return (d: number) => push(`${name} 验证失败 diff=${d.toFixed(1)}`)
+function onFail(name) {
+  return (d) => push(`${name} 验证失败 diff=${d.toFixed(1)}`)
 }
 
 const imgs = [
@@ -43,8 +43,8 @@ const imgs = [
 ]
 
 // 内嵌模式:无 Portal/Overlay,常驻页面,成功后自动重置
-const inlineRoot = ref<{ reset: () => void } | null>(null)
-function onInlineSuccess(d: number) {
+const inlineRoot = ref(null)
+function onInlineSuccess(d) {
   push(`内嵌模式 验证成功 diff=${d.toFixed(1)},1.5s 后自动重置`)
   setTimeout(() => inlineRoot.value?.reset(), 1500)
 }
@@ -165,7 +165,7 @@ const btn =
     <!-- 1. 默认组合组件:不传 imgs -->
     <Vcode
       v-model:show="showDefault"
-      @success="(d: number) => { onSuccess('默认组件')(d); showDefault = false }"
+      @success="(d) => { onSuccess('默认组件')(d); showDefault = false }"
       @fail="onFail('默认组件')"
       @close="push('默认组件 关闭')"
     />
@@ -174,7 +174,7 @@ const btn =
     <Vcode
       v-model:show="showImgs"
       :imgs="imgs"
-      @success="(d: number) => { onSuccess('自定义图片')(d); showImgs = false }"
+      @success="(d) => { onSuccess('自定义图片')(d); showImgs = false }"
       @fail="onFail('自定义图片')"
       @close="push('自定义图片 关闭')"
     />
@@ -187,7 +187,7 @@ const btn =
       :puzzle-scale="1.2"
       :slider-size="44"
       :range="8"
-      @success="(d: number) => { onSuccess('自定义尺寸')(d); showSize = false }"
+      @success="(d) => { onSuccess('自定义尺寸')(d); showSize = false }"
       @fail="onFail('自定义尺寸')"
       @close="push('自定义尺寸 关闭')"
     />
@@ -198,7 +198,7 @@ const btn =
       success-text="🎉 太棒了,验证通过!"
       fail-text="哎呀不对,再试一次"
       slider-text="按住滑块,拖到缺口处 →"
-      @success="(d: number) => { onSuccess('自定义文案')(d); showText = false }"
+      @success="(d) => { onSuccess('自定义文案')(d); showText = false }"
       @fail="onFail('自定义文案')"
       @close="push('自定义文案 关闭')"
     />
@@ -207,7 +207,7 @@ const btn =
     <VcodeRoot
       v-model:show="showParts"
       :imgs="imgs"
-      @success="(d: number) => { onSuccess('组合式 parts')(d); showParts = false }"
+      @success="(d) => { onSuccess('组合式 parts')(d); showParts = false }"
       @fail="onFail('组合式 parts')"
       @close="push('组合式 parts 关闭')"
     >
