@@ -1,15 +1,45 @@
-import { defineComponent, type DefineComponent } from 'vue-demi'
+import { defineComponent, type DefineComponent, onBeforeUnmount, onMounted, watch } from 'vue-demi'
 import { hCompat, useVcodeContext } from '@vue-puzzle-vcode/core'
+
+const BODY_LOCK_CLASS = 'vpv-body-lock'
+
+// Process-wide reference count: with several overlays visible at once,
+// closing one must not unlock the body while another is still showing.
+let bodyLockCount = 0
 
 /**
  * Fixed backdrop. Pointer gestures that start and end on the overlay (not on
  * the panel) request a close. Wraps `VcodePanel`.
+ *
+ * Also owns the body scroll-lock: it lives here rather than in `VcodeRoot`
+ * so headless/inline usage without an overlay never locks the page.
  */
 export const VcodeOverlay: DefineComponent = defineComponent({
   name: 'VcodeOverlay',
   inheritAttrs: false,
   setup(_, { slots, attrs }) {
     const ctx = useVcodeContext('VcodeOverlay')
+
+    let locked = false
+    const lock = () => {
+      if (locked) return
+      locked = true
+      if (bodyLockCount++ === 0) document.body.classList.add(BODY_LOCK_CLASS)
+    }
+    const unlock = () => {
+      if (!locked) return
+      locked = false
+      if (--bodyLockCount === 0) document.body.classList.remove(BODY_LOCK_CLASS)
+    }
+    watch(
+      () => ctx.config.show,
+      (visible) => (visible ? lock() : unlock()),
+    )
+    onMounted(() => {
+      if (ctx.config.show) lock()
+    })
+    onBeforeUnmount(unlock)
+
     return () => {
       const { class: extraClass, style, ...rest } = attrs
       return hCompat(
