@@ -1,5 +1,13 @@
 # @vue-puzzle-vcode/core
 
+## 2.0.2
+
+### Patch Changes
+
+- 632e4e7: 补充 core / shared 的 npm README(此前 npm 包页面无说明文档)。
+- Updated dependencies [632e4e7]
+  - @vue-puzzle-vcode/shared@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes

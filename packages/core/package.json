@@ -1,6 +1,6 @@
 {
   "name": "@vue-puzzle-vcode/core",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Headless core for vue-puzzle-vcode: context factory, v2/v3 render compat, state machine",
   "license": "ISC",
   "repository": {

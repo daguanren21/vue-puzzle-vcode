@@ -1,5 +1,12 @@
 # @vue-puzzle-vcode/ui
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies [632e4e7]
+  - @vue-puzzle-vcode/core@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
