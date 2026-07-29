@@ -1,4 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@vue-puzzle-vcode/core": ["../core/src/index.ts"],
+      "@vue-puzzle-vcode/shared": ["../shared/src/index.ts"]
+    }
+  },
   "include": ["src", "vite.config.ts"]
 }
