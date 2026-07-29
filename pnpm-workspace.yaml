@@ -1,0 +1,40 @@
+packages:
+  - 'packages/*'
+  - 'playgrounds/*'
+
+# Exact versions when saving new dependencies
+savePrefix: ''
+
+# Supply-chain hardening (pnpm >= 10.16, default 1440 since v11):
+# only install releases at least 1 day old. Freshly published versions
+# are delayed; list trusted, freshly-pinned packages in the exclude list.
+minimumReleaseAge: 1440
+
+# Shared dependency versions for the whole workspace.
+# Reference with `"dep": "catalog:"` in package.json files.
+catalog:
+  typescript: 7.0.2
+  tsdown: 0.22.14
+  vite: 8.1.5
+  tailwindcss: 4.3.3
+  '@tailwindcss/vite': 4.3.3
+  '@vitejs/plugin-vue': 6.0.8
+  '@vitejs/plugin-vue2': 2.3.4
+  vue: 3.5.40
+  vue-demi: 0.14.10
+
+catalogs:
+  # Vue 2.7 playground runtime
+  vue27:
+    vue: 2.7.16
+
+# vue-demi switches its v2/v3 entrypoint in a postinstall script
+allowBuilds:
+  vue-demi: true
+  esbuild: true
+
+# @vitejs/plugin-vue2 declares vite ^3-^7 but works on vite 8 (verified in
+# playgrounds/vue2)
+peerDependencyRules:
+  allowedVersions:
+    vite: '8'

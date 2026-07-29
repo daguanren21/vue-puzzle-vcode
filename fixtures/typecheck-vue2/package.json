@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "vue-puzzle-vcode": "file:../vue-puzzle-vcode-2.0.0.tgz",
+    "@vue-puzzle-vcode/core": "file:../vue-puzzle-vcode-core-2.0.0.tgz",
+    "@vue-puzzle-vcode/shared": "file:../vue-puzzle-vcode-shared-2.0.0.tgz",
+    "vue": "2.7.16"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  },
+  "name": "fixture-typecheck-vue2"
+}

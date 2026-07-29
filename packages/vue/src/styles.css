@@ -1,0 +1,265 @@
+/**
+ * vue-puzzle-vcode stylesheet.
+ * All classes are `vpv-` prefixed; no global resets leak into the host app.
+ * Ported from the original Less source, class-for-class.
+ */
+
+.vpv-root {
+  display: contents;
+}
+
+.vpv-body-lock {
+  overflow: hidden !important;
+}
+
+/* ------------------------------------------------------------- overlay */
+.vpv-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms;
+}
+.vpv-overlay--show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------------------- panel */
+.vpv-panel {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background: #fff;
+  user-select: none;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* --------------------------------------------------------------- board */
+.vpv-board {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.vpv-canvas-main {
+  display: block;
+}
+
+.vpv-canvas-puzzle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.vpv-canvas-success {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 600ms;
+  z-index: 3;
+}
+.vpv-canvas-success--show {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------- flash */
+.vpv-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  z-index: 3;
+}
+.vpv-flash--show {
+  transition: transform 600ms;
+}
+
+/* ------------------------------------------------------------- loading */
+.vpv-loading {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 20;
+  opacity: 1;
+  transition: opacity 200ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vpv-loading--hide {
+  opacity: 0;
+  pointer-events: none;
+}
+.vpv-loading--hide .vpv-loading-spinner span {
+  animation-play-state: paused;
+}
+
+.vpv-loading-spinner {
+  flex: none;
+  height: 5px;
+  line-height: 0;
+}
+.vpv-loading-spinner span {
+  display: inline-block;
+  width: 5px;
+  height: 100%;
+  margin-left: 2px;
+  border-radius: 50%;
+  background-color: #888;
+  animation: vpv-load 1.04s ease infinite;
+}
+.vpv-loading-spinner span:nth-child(1) {
+  margin-left: 0;
+}
+.vpv-loading-spinner span:nth-child(2) {
+  animation-delay: 0.13s;
+}
+.vpv-loading-spinner span:nth-child(3) {
+  animation-delay: 0.26s;
+}
+.vpv-loading-spinner span:nth-child(4) {
+  animation-delay: 0.39s;
+}
+.vpv-loading-spinner span:nth-child(5) {
+  animation-delay: 0.52s;
+}
+
+@keyframes vpv-load {
+  0% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+  100% {
+    opacity: 0.2;
+    transform: scale(0.3);
+  }
+}
+
+/* ------------------------------------------------------------- message */
+.vpv-message {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  overflow: hidden;
+  font-size: 13px;
+  background-color: #83ce3f;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 200ms;
+  color: #fff;
+  z-index: 10;
+}
+.vpv-message--show {
+  opacity: 0.95;
+  transform: translateY(0);
+}
+.vpv-message--fail {
+  background-color: #ce594b;
+}
+
+/* ------------------------------------------------------------- refresh */
+.vpv-refresh {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 35px;
+  z-index: 12;
+  cursor: pointer;
+  transition: transform 200ms;
+  transform: rotate(0deg);
+}
+.vpv-refresh:hover {
+  transform: rotate(-90deg);
+}
+.vpv-refresh img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* -------------------------------------------------------------- slider */
+.vpv-slider {
+  position: relative;
+  width: 100%;
+  background-color: #eef1f8;
+  margin-top: 20px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(240, 240, 240, 0.6) inset;
+}
+
+.vpv-slider-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #b7bcd1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 100%;
+}
+
+.vpv-slider-progress {
+  position: absolute;
+  height: 100%;
+  background-color: rgba(106, 160, 255, 0.8);
+  border-radius: 3px;
+}
+
+.vpv-slider-thumb {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 0 4px #ccc;
+  cursor: pointer;
+}
+.vpv-slider-thumb > div {
+  width: 0;
+  height: 40%;
+  border: solid 1px #6aa0ff;
+  transition: all 200ms;
+}
+.vpv-slider-thumb > div:nth-child(2) {
+  margin: 0 4px;
+}
+.vpv-slider-thumb:hover > div:first-child,
+.vpv-slider-thumb--down > div:first-child {
+  border: solid 4px transparent;
+  height: 0;
+  border-right-color: #6aa0ff;
+}
+.vpv-slider-thumb:hover > div:nth-child(2),
+.vpv-slider-thumb--down > div:nth-child(2) {
+  border-width: 3px;
+  height: 0;
+  border-radius: 3px;
+  margin: 0 6px;
+  border-right-color: #6aa0ff;
+}
+.vpv-slider-thumb:hover > div:nth-child(3),
+.vpv-slider-thumb--down > div:nth-child(3) {
+  border: solid 4px transparent;
+  height: 0;
+  border-left-color: #6aa0ff;
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@vue-puzzle-vcode/core",
+  "version": "2.0.0",
+  "description": "Headless core for vue-puzzle-vcode: context factory, v2/v3 render compat, state machine",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javaLuo/vue-puzzle-vcode.git",
+    "directory": "packages/core"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vue-puzzle-vcode/shared": "workspace:^",
+    "vue-demi": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^2.7.0 || ^3.0.0"
+  },
+  "devDependencies": {
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vue": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
