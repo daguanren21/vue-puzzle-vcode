@@ -1,6 +1,6 @@
 {
   "name": "@vue-puzzle-vcode/ui",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "vue 滑动拼图验证码 — sliding puzzle captcha components for Vue 2.7 & Vue 3",
   "type": "module",
   "exports": {

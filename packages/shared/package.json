@@ -1,6 +1,6 @@
 {
   "name": "@vue-puzzle-vcode/shared",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Shared pure utilities for vue-puzzle-vcode (canvas drawing, math)",
   "license": "ISC",
   "repository": {
